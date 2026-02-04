@@ -1,76 +1,73 @@
 /*===== MENU SHOW =====*/ 
 const showMenu = (toggleId, navId) =>{
   const toggle = document.getElementById(toggleId),
-  nav = document.getElementById(navId)
+        nav = document.getElementById(navId)
 
   if(toggle && nav){
-      toggle.addEventListener('click', ()=>{
-          nav.classList.toggle('show')
-      })
+    toggle.addEventListener('click', () =>{
+      nav.classList.toggle('show')
+    })
   }
 }
 showMenu('nav-toggle','nav-menu')
+
 
 /*===== ACTIVE AND REMOVE MENU =====*/
 const navLink = document.querySelectorAll('.nav__link');   
 
 function linkAction(){
-/*Active link*/
-navLink.forEach(n => n.classList.remove('active'));
-this.classList.add('active');
+  navLink.forEach(n => n.classList.remove('active'));
+  this.classList.add('active');
 
-/*Remove menu mobile*/
-const navMenu = document.getElementById('nav-menu')
-navMenu.classList.remove('show')
+  const navMenu = document.getElementById('nav-menu')
+  navMenu.classList.remove('show')
 }
 navLink.forEach(n => n.addEventListener('click', linkAction));
 
-/*==================== ACCORDION SKILLS ====================*/
-const skillsContent = document.getElementsByClassName('skills__content'),
-      skillsHeader = document.querySelectorAll('.skills__header')
 
-      function toggleSkills() {
-        let itemClass = this.parentNode.className
+/*==================== SKILLS (SIMPLE & STABLE ACCORDION) ====================*/
+const skillsHeaders = document.querySelectorAll('.skills__header');
 
-        for(i = 0; i < skillsContent.length; i++) {
-          skillsContent[i].className = 'skills__content skills__close'
-        }
-        if(itemClass === 'skills__content skills__close'){
-          this.parentNode.className = 'skills__content skills_open'
-        }
-      }
-      
-      skillsHeader.forEach((el) => {
-        el.addEventListener('click', toggleSkills)
-      })
+skillsHeaders.forEach(header => {
+  header.addEventListener('click', () => {
+    const parent = header.parentElement;
 
-      /*===== SCROLL REVEAL ANIMATION =====*/
+    if (parent.classList.contains('skills__open')) {
+      parent.classList.remove('skills__open');
+      parent.classList.add('skills__close');
+    } else {
+      parent.classList.remove('skills__close');
+      parent.classList.add('skills__open');
+    }
+  });
+});
+
+
+/*===== SCROLL REVEAL ANIMATION =====*/
 const sr = ScrollReveal({
   origin: 'top',
-  distance: '80px',
-  duration: 2000,
+  distance: '100px',
+  duration: 6000,
   reset: true
 });
-/*SCROLL HOME*/
+
+/* SCROLL HOME */
 sr.reveal('.home__title',{}); 
- 
 sr.reveal('.home__img',{delay: 400}); 
-sr.reveal('.home__social-icon',{ interval: 200}); 
-/*SCROLL ABOUT*/
+sr.reveal('.home__social-icon',{interval: 100}); 
+
+/* SCROLL ABOUT */
 sr.reveal('.about__img',{}); 
 sr.reveal('.about__subtitle',{delay: 400}); 
 sr.reveal('.about__text',{delay: 400}); 
 
-/*SCROLL SKILLS*/
+/* SCROLL SKILLS */
 sr.reveal('.skills__subtitle',{}); 
-sr.reveal('.skills__text',{}); 
-sr.reveal('.skills__data',{interval: 200}); 
-sr.reveal('.skills__img',{delay: 600});
+sr.reveal('.skills__data',{interval: 100}); 
 
-/*SCROLL WORK*/
+/* SCROLL WORK */
 sr.reveal('.work__img',{interval: 200}); 
 
- 
 
 /*==================== QUALIFICATION TABS ====================*/
 const tabs = document.querySelectorAll('[data-target]'),
@@ -78,7 +75,6 @@ const tabs = document.querySelectorAll('[data-target]'),
 
 tabs.forEach(tab => {
   tab.addEventListener('click', () => {
-    console.log('click disparado')
     const target = document.querySelector(tab.dataset.target)
 
     tabContents.forEach(tabContent => {
@@ -93,13 +89,14 @@ tabs.forEach(tab => {
   })
 })
 
+
 /*==================== SERVICES MODAL ====================*/
 const modalViews = document.querySelectorAll('.services__modal'),
       modalBtns = document.querySelectorAll('.services__button'),
       modalCloses = document.querySelectorAll('.services__modal-close')
 
 let modal = function(modalClick) {
-    modalViews[modalClick].classList.add('active-modal')
+  modalViews[modalClick].classList.add('active-modal')
 }
 
 modalBtns.forEach((modalBtn, i) => {
@@ -116,7 +113,8 @@ modalCloses.forEach((modalClose) => {
   })
 })
 
-/*==================== PORTFOLIO SWIPER  ====================*/
+
+/*==================== PORTFOLIO SWIPER ====================*/
 let swiperPortfolio = new Swiper('.portfolio__container', {
   cssMode: true,
   loop: true,
@@ -129,10 +127,7 @@ let swiperPortfolio = new Swiper('.portfolio__container', {
   pagination: {
     el: '.swiper-pagination',
     clickable: true,
-  },
-
-  /* mousewheel: true,
-  keyboard: true, */
+  }
 });
 
 
@@ -140,35 +135,45 @@ let swiperPortfolio = new Swiper('.portfolio__container', {
 const sections = document.querySelectorAll('section[id]')
 
 function scrollActive(){
-    const scrollY = window.pageYOffset
+  const scrollY = window.pageYOffset
 
-    sections.forEach(current =>{
-        const sectionHeight = current.offsetHeight
-        const sectionTop = current.offsetTop - 50;
-        sectionId = current.getAttribute('id')
+  sections.forEach(current =>{
+    const sectionHeight = current.offsetHeight
+    const sectionTop = current.offsetTop - 50
+    const sectionId = current.getAttribute('id')
 
-        if(scrollY > sectionTop && scrollY <= sectionTop + sectionHeight){
-            document.querySelector('.nav__menu a[href*=' + sectionId + ']').classList.add('active-link')
-        }else{
-            document.querySelector('.nav__menu a[href*=' + sectionId + ']').classList.remove('active-link')
-        }
-    })
+    const link = document.querySelector('.nav__menu a[href*=' + sectionId + ']')
+    if(!link) return;
+
+    if(scrollY > sectionTop && scrollY <= sectionTop + sectionHeight){
+      link.classList.add('active-link')
+    } else {
+      link.classList.remove('active-link')
+    }
+  })
 }
 window.addEventListener('scroll', scrollActive)
+
 
 /*==================== CHANGE BACKGROUND HEADER ====================*/ 
 function scrollHeader(){
   const nav = document.getElementById('header')
-  // When the scroll is greater than 200 viewport height, add the scroll-header class to the header tag
-  if(this.scrollY >= 80) nav.classList.add('scroll-header'); else nav.classList.remove('scroll-header')
+  if(window.scrollY >= 80) {
+    nav.classList.add('scroll-header')
+  } else {
+    nav.classList.remove('scroll-header')
+  }
 }
 window.addEventListener('scroll', scrollHeader)
 
+
 /*==================== SHOW SCROLL UP ====================*/ 
 function scrollUp(){
-  const scrollUp = document.getElementById('scroll-up');
-  // When the scroll is higher than 560 viewport height, add the show-scroll class to the a tag with the scroll-top class
-  if(this.scrollY >= 560) scrollUp.classList.add('show-scroll'); else scrollUp.classList.remove('show-scroll')
+  const scrollUp = document.getElementById('scroll-up')
+  if(window.scrollY >= 560) {
+    scrollUp.classList.add('show-scroll')
+  } else {
+    scrollUp.classList.remove('show-scroll')
+  }
 }
 window.addEventListener('scroll', scrollUp)
-

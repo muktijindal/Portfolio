@@ -452,7 +452,7 @@ img {
 .skills__icon:hover,
 .skills__arrow:hover {
     color: var(--first-color-lighter);
-    transition: .4s;
+    transition: .6s;
 }
 
 .skills__title {
